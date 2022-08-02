@@ -328,7 +328,7 @@ createInfoodleAccount()
   Send {Space}
   tab(5)
   Send Voted on MGC
-  tab(,2200)
+  tab(,2500)
   tab()
   Send Email Subscribers
   tab()
