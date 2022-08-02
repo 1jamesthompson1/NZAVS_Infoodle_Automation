@@ -136,7 +136,7 @@ checkForAccount()
   IfMsgBox Yes
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
-    Sleep 4000
+    MsgBox, 0, %programName%, Has the account loaded yet, 7
     fillOutNote(noteTemplate)
   }
   else
