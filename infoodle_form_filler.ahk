@@ -131,7 +131,7 @@ checkForAccount()
   IfMsgBox Yes
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
-    Sleep 3000
+    Sleep 4000
     fillOutNote()
   }
   else
