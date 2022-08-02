@@ -17,13 +17,15 @@ loop
   }
   else
   { ;----Normal startup
-    MsgBox, 35, %programName%, Do you want to keep current settings or change them?
+    MsgBox, 35, %programName%, Do you want to keep current settings?
     IfMsgBox No
+    {  
       MsgBox, 36, Settings Change, Do you want to change mouse position or default note (yes for mouse and no for default note)?
       IfMsgBox Yes
         setupMousePositions()
       IfMsgBox No
         changeDefaultNote()
+    }
     IniRead, searchBarX, config.ini, Button Locations, searchBarX
     IniRead, searchBarY, config.ini, Button Locations, searchBarY
     IniRead, selectionX, config.ini, Button Locations, selectionX
@@ -50,44 +52,39 @@ setupMousePositions()
   MsgBox Setting of infoodle, Please press on Search bar
   Send {Home}
   sleep(200)
-  Hotkey, LButton, On
-  Sleep 2000
+  KeyWait, LButton, D
+  MouseGetPos, xpos, ypos
   searchBarX := xpos
   searchBarY := ypos
   selectionX := searchBarX
   selectionY := searchBarY + 40
-  Hotkey, LButton, Off
 
   ;Note button
   MsgBox Set coordinates to %searchBarX% and %searchBarY%, Please press the  Note now.
   Send {Home}
   sleep 200
-  Hotkey, LButton, On
-  Sleep 2000
+  KeyWait, LButton, D
+  MouseGetPos, xpos, ypos
   noteButtonX := xpos
   noteButtonY := ypos
-  Hotkey, LButton, Off
   MsgBox Set coordinates to %noteButtonX% and %noteButtonY%, Please press the colour code now.
 
   ;Colour Code
-  Send {Home}
-  Sleep 200
   Click, %noteButtonX% %noteButtonY%
-  Hotkey, LButton, On
-  Sleep 2000
+  KeyWait, LButton, D
+  MouseGetPos, xpos, ypos
   colourCodeX := xpos
   colourCodeY := ypos
-  Hotkey, LButton, Off
+
   MsgBox Set coordinates to %colourCodeX% and %colourCodeY%, please press the add account button
 
   ;Add people account
   Send {Home}
   Sleep 200
-  Hotkey, LButton, On
-  Sleep 2000
+  KeyWait, LButton, D
+  MouseGetPos, xpos, ypos
   addButtonX := xpos
   addButtonY := ypos
-  Hotkey, LButton, Off
   MsgBox Set coordinates to %addButtonX% and %addButtonY%. All setup and ready to go.
 
   IniWrite, %searchBarX%, config.ini, Button Locations, searchBarX
@@ -350,7 +347,3 @@ sleep(sleepTime := 100) {
 ;--------Hotkeys---------------
 <!L::finalAttemptInteraction()
 Alt::checkForAccount()
-
-LButton::
-CoordMode Mouse
-MouseGetPos, xpos, ypos
