@@ -171,7 +171,7 @@ finalAttemptInteraction()
   {
     Click %selectionX% %selectionY%
     Sleep 3000
-    tempNote = TF %date%, no answer on 3rd attempt
+    tempNote = Telefund - MGC - %date%, No contact on 3rd attempt
     fillOutNote(tempNote, false)
     ;Not yet implemented
     ;~ Sleep 2000 ;Waiting for the form to be submitted
