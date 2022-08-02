@@ -6,7 +6,6 @@ SetWorkingDir %A_ScriptDir%
 programName := "NZAVS Automation Script v0.1.0"
 
 ;--------------Setup and train the script---------------------
-Hotkey, LButton, Off
 loop
 {
   if !FileExist("config.ini")
@@ -14,10 +13,13 @@ loop
     MsgBox, 64, %programName%, Setting up Automation script for first use.
     setupMousePositions()
     changeDefaultNote()
+    IniWrite, False, config.ini, Settings, autoSubmitNote
   }
   else
   { ;----Normal startup
     MsgBox, 35, %programName%, Do you want to keep current settings?
+    IfMsgBox, Cancel
+      ExitApp
     IfMsgBox No
     {  
       MsgBox, 36, Settings Change, Do you want to change mouse position or default note (yes for mouse and no for default note)?
@@ -37,6 +39,7 @@ loop
     IniRead, addButtonX, config.ini, Button Locations, addButtonX
     IniRead, addButtonY, config.ini, Button Locations, addButtonY
     IniRead, noteTemplate, config.ini, Settings, defaultNote
+    IniRead, autoSubmitNote, config.ini, Settings, autoSubmitNote
     break
   }
 }
@@ -132,7 +135,7 @@ checkForAccount()
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
     Sleep 4000
-    fillOutNote()
+    fillOutNote(,autoSubmitNote)
   }
   else
   { ;Go to add a new person
