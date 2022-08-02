@@ -1,59 +1,120 @@
 #NoEnv
-#Warn
 #SingleInstance Force
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+programName := "NZAVS Automation Script v0.1.0"
+
 ;--------------Setup and train the script---------------------
-CoordMode, Mouse
+Hotkey, LButton, Off
+loop
+{
+  if !FileExist("config.ini")
+  { ;----First time setup
+    MsgBox, 64, %programName%, Setting up Automation script for first use.
+    setupMousePositions()
+    changeDefaultNote()
+  }
+  else
+  { ;----Normal startup
+    MsgBox, 35, %programName%, Do you want to keep current settings or change them?
+    IfMsgBox No
+      MsgBox, 36, Settings Change, Do you want to change mouse position or default note (yes for mouse and no for default note)?
+      IfMsgBox Yes
+        setupMousePositions()
+      IfMsgBox No
+        changeDefaultNote()
+    IniRead, searchBarX, config.ini, Button Locations, searchBarX
+    IniRead, searchBarY, config.ini, Button Locations, searchBarY
+    IniRead, selectionX, config.ini, Button Locations, selectionX
+    IniRead, selectionY, config.ini, Button Locations, selectionY
+    IniRead, noteButtonX, config.ini, Button Locations, noteButtonX
+    IniRead, noteButtonY, config.ini, Button Locations, noteButtonY
+    IniRead, colourCodeX, config.ini, Button Locations, colourCodeX
+    IniRead, colourCodeY, config.ini, Button Locations, colourCodeY
+    IniRead, addButtonX, config.ini, Button Locations, addButtonX
+    IniRead, addButtonY, config.ini, Button Locations, addButtonY
+    IniRead, noteTemplate, config.ini, Settings, defaultNote
+    break
+  }
+}
 
-;Search Bar
-Hotkey, LButton, Off
-MsgBox Setting of infoodle, Please press on Search bar
-Send {Home}
-sleep(200)
-Hotkey, LButton, On
-Sleep 2000
-searchBarX := xpos
-searchBarY := ypos
-selectionX := searchBarX
-selectionY := searchBarY + 40
-Hotkey, LButton, Off
-
-;Note button
-MsgBox Set coordinates to %searchBarX% and %searchBarY%, Please press the  Note now.
-Send {Home}
-sleep 200
-Hotkey, LButton, On
-Sleep 2000
-noteButtonX := xpos
-noteButtonY := ypos
-Hotkey, LButton, Off
-MsgBox Set coordinates to %noteButtonX% and %noteButtonY%, Please press the colour code now.
-
-;Colour Code
-Send {Home}
-Sleep 200
-Click, %noteButtonX% %noteButtonY%
-Hotkey, LButton, On
-Sleep 2000
-colourCodeX := xpos
-colourCodeY := ypos
-Hotkey, LButton, Off
-MsgBox Set coordinates to %colourCodeX% and %colourCodeY%, please press the add account button
-
-;Add people account
-Send {Home}
-Sleep 200
-Hotkey, LButton, On
-Sleep 2000
-addButtonX := xpos
-addButtonY := ypos
-Hotkey, LButton, Off
-MsgBox Set coordinates to %addButtonX% and %addButtonY%. All setup and ready to go
 
 
 ;------------Functions-----------------------
+setupMousePositions()
+{
+  global
+  CoordMode, Mouse
+  ;Search Bar
+  MsgBox Setting of infoodle, Please press on Search bar
+  Send {Home}
+  sleep(200)
+  Hotkey, LButton, On
+  Sleep 2000
+  searchBarX := xpos
+  searchBarY := ypos
+  selectionX := searchBarX
+  selectionY := searchBarY + 40
+  Hotkey, LButton, Off
+
+  ;Note button
+  MsgBox Set coordinates to %searchBarX% and %searchBarY%, Please press the  Note now.
+  Send {Home}
+  sleep 200
+  Hotkey, LButton, On
+  Sleep 2000
+  noteButtonX := xpos
+  noteButtonY := ypos
+  Hotkey, LButton, Off
+  MsgBox Set coordinates to %noteButtonX% and %noteButtonY%, Please press the colour code now.
+
+  ;Colour Code
+  Send {Home}
+  Sleep 200
+  Click, %noteButtonX% %noteButtonY%
+  Hotkey, LButton, On
+  Sleep 2000
+  colourCodeX := xpos
+  colourCodeY := ypos
+  Hotkey, LButton, Off
+  MsgBox Set coordinates to %colourCodeX% and %colourCodeY%, please press the add account button
+
+  ;Add people account
+  Send {Home}
+  Sleep 200
+  Hotkey, LButton, On
+  Sleep 2000
+  addButtonX := xpos
+  addButtonY := ypos
+  Hotkey, LButton, Off
+  MsgBox Set coordinates to %addButtonX% and %addButtonY%. All setup and ready to go.
+
+  IniWrite, %searchBarX%, config.ini, Button Locations, searchBarX
+  IniWrite, %searchBarY%, config.ini, Button Locations, searchBarY
+  IniWrite, %selectionX%, config.ini, Button Locations, selectionX
+  IniWrite, %selectionY%, config.ini, Button Locations, selectionY
+  IniWrite, %noteButtonX%, config.ini, Button Locations, noteButtonX
+  IniWrite, %noteButtonY%, config.ini, Button Locations, noteButtonY
+  IniWrite, %colourCodeX%, config.ini, Button Locations, colourCodeX
+  IniWrite, %colourCodeY%, config.ini, Button Locations, colourCodeY
+  IniWrite, %addButtonX%, config.ini, Button Locations, addButtonX
+  IniWrite, %addButtonY%, config.ini, Button Locations, addButtonY
+}
+
+changeDefaultNote()
+{
+  IniRead, currentNote, config.ini, Settings, defaultNote
+  if (currentNote == "ERROR") { ;Create the note
+    InputBox, newNote, %programName%, What do you want the note to be?
+  } else { ;Change the note
+    InputBox, newNote, %programName%, The current note template is "%currentNote%" enter new note if you want
+    if ErrorLevel
+      return
+  }
+  IniWrite %newNote%, config.ini, Settings, defaultNote
+}
+
 checkForAccount()
 {
   global
@@ -174,9 +235,10 @@ finalAttemptInteraction()
 /**
 *Should be called from infoodle homepage
 */
-fillOutNote(note := "TF,", autoFinish := false)
+fillOutNote(note := "", autoFinish := false)
 {
   Global
+  note := noteTemplate
   CoordMode, Mouse
   Send {Home}
   Click, %noteButtonX% %noteButtonY%
@@ -284,8 +346,11 @@ sleep(sleepTime := 100) {
   Sleep %sleepTime%
 }
 
+
 ;--------Hotkeys---------------
 <!L::finalAttemptInteraction()
 Alt::checkForAccount()
 
-LButton:: MouseGetPos, xpos, ypos
+LButton::
+CoordMode Mouse
+MouseGetPos, xpos, ypos
