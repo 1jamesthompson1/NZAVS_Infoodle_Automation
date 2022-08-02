@@ -126,6 +126,10 @@ checkForAccount()
   sleep(200)
   Click %searchBarX% %searchBarY%
   sleep()
+  Send ^a
+  sleep()
+  Send {BackSpace}
+  sleep()
   Send ^v
   sleep()
   MsgBox, 36, Is there a record?, Please yes for record and no for unfound
