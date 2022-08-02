@@ -13,7 +13,6 @@ loop
     MsgBox, 64, %programName%, Setting up Automation script for first use.
     setupMousePositions()
     changeDefaultNote()
-    IniWrite, False, config.ini, Settings, autoSubmitNote
   }
   else
   { ;----Normal startup
@@ -39,7 +38,6 @@ loop
     IniRead, addButtonX, config.ini, Button Locations, addButtonX
     IniRead, addButtonY, config.ini, Button Locations, addButtonY
     IniRead, noteTemplate, config.ini, Settings, defaultNote
-    IniRead, autoSubmitNote, config.ini, Settings, autoSubmitNote
     break
   }
 }
@@ -135,7 +133,7 @@ checkForAccount()
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
     Sleep 4000
-    fillOutNote(,autoSubmitNote)
+    fillOutNote(noteTemplate)
   }
   else
   { ;Go to add a new person
@@ -170,7 +168,7 @@ finalAttemptInteraction()
     Click %selectionX% %selectionY%
     Sleep 3000
     tempNote = TF %date%, no answer on 3rd attempt
-    fillOutNote(tempNote, true)
+    fillOutNote(tempNote, false)
     ;Not yet implemented
     ;~ Sleep 2000 ;Waiting for the form to be submitted
     ;~ Send ^+{Tab}
@@ -238,7 +236,6 @@ finalAttemptInteraction()
 fillOutNote(note := "", autoFinish := false)
 {
   Global
-  note := noteTemplate
   CoordMode, Mouse
   Send {Home}
   Click, %noteButtonX% %noteButtonY%
@@ -273,12 +270,15 @@ fillOutNote(note := "", autoFinish := false)
   Send {Space}
   Sleep 300
 
-  if (autoFinish) {
+  if (autoFinish) 
+  {
+    MsgBox, ,, Inside autoFinish
     Send {Tab}
     Sleep 300
     ;Save note
     Send {Enter}
-  } else
+  } 
+  else
   {
     loop 3
     {
