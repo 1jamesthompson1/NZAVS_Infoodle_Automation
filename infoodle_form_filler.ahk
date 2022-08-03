@@ -116,7 +116,16 @@ changeDefaultNote()
   IniWrite %newNote%, config.ini, Settings, defaultNote
 }
 
-checkForAccount(finalAttempt := false)
+generalInteraction() {
+  infoodleAccountExists := checkForAccount()
+  if (infoodleAccountExists) {
+    fillOutNote(noteTemplate)
+  } else {
+    createInfoodleAccount()
+  }
+}
+
+checkForAccount()
 {
   global
   Send {Home}
@@ -140,17 +149,11 @@ checkForAccount(finalAttempt := false)
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
     MsgBox, 0, %programName%, Has the account loaded yet, 7
-    if (finalAttempt) {
-
-    }else {
-      fillOutNote(noteTemplate)
-    }
-    
+    Return true
   }
   else
   { ;Go to add a new person
-    ;Head back to workbook and get information
-    createInfoodleAccount()
+    Return false
   }
 }
 
@@ -361,4 +364,6 @@ sleep(sleepTime := 100) {
 
 ;--------Hotkeys---------------
 <!L::finalAttemptInteraction()
-Alt::checkForAccount()
+
+
+Alt::generalInteraction()
