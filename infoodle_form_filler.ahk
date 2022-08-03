@@ -11,8 +11,6 @@ loop
   if !FileExist("config.ini")
   { ;----First time setup
     MsgBox, 64, %programName%, Setting up Automation script for first use.
-    InputBox, callerName, %programName%, What was your name?
-    IniWrite %callerName%, config.ini, Settings, callerName
     setupMousePositions()
     changeDefaultNote()
   }
@@ -40,7 +38,6 @@ loop
     IniRead, addButtonX, config.ini, Button Locations, addButtonX
     IniRead, addButtonY, config.ini, Button Locations, addButtonY
     IniRead, noteTemplate, config.ini, Settings, defaultNote
-    IniRead, callerName, config.ini, Settings, callerName
     break
   }
 }
@@ -117,6 +114,7 @@ changeDefaultNote()
 }
 
 generalInteraction() {
+  global
   infoodleAccountExists := checkForAccount()
   if (infoodleAccountExists) {
     fillOutNote(noteTemplate)
@@ -146,13 +144,13 @@ checkForAccount()
   sleep()
   MsgBox, 36, Is there a record?, Please yes for record and no for unfound
   IfMsgBox Yes
-  { ;Go to note fill out most of the interaction
+  {
     Click %selectionX% %selectionY%
     MsgBox, 0, %programName%, Has the account loaded yet, 7
     Return true
   }
   else
-  { ;Go to add a new person
+  {
     Return false
   }
 }
@@ -164,85 +162,41 @@ finalAttemptInteraction()
 {
   global
   Send ^c
-  Sleep 200
+  sleep(200)
   date := clipboard
-  Send {Home}
+  Send +{Tab}
   Send ^c
-  Sleep 100
-  Send ^{Tab}
-  Sleep 100
-  Send {Home}
-  Sleep 200
-  Click %searchBarX% %searchBarY%
-  Sleep 100
-  Send ^v
+  sleep(200)
+  callerName := clipboard
 
-  MsgBox, 36, Is there a record?, Please yes for record and no for unfound
-  IfMsgBox Yes
+  infoodleAccountExits := checkForAccount()
+  if (infoodleAccountExits)
   {
-    Click %selectionX% %selectionY%
-    Sleep 3000
-    tempNote = Telefund - MGC - %date%,`n Contact added by %callerName%.`n No contact on 3rd attempt
-    fillOutNote(tempNote, false)
-    ;Not yet implemented
-    ;~ Sleep 2000 ;Waiting for the form to be submitted
-    ;~ Send ^+{Tab}
-    ;~ Sleep 400
-    ;~ Send {Right}
-    ;~ Sleep 100
-    ;~ Send {Right}
-    ;~ Sleep 100
-    ;~ Send {Enter}
-    ;~ Sleep 100
-    ;~ Send ^{Backspace}
-    ;~ Sleep 100
-    ;~ Send True
-    ;~ Sleep 100
-    ;~ Send {Tab}
-    ;~ Sleep 100
-    ;~ Send {Space}
-    ;~ Loop 9
-    ;~ {
-      ;~ Send {Right}
-      ;~ Sleep 100
-    ;~ }
+    finalAttemptNote = Telefund - MGC - %date%,`n Contact added by %callerName%.`n No contact on 3rd attempt
+    fillOutNote(finalAttemptNote, true)
+
+    MsgBox, 0, %programName%, Has the form submitted yet?, 3 ;Waiting for the form to be submitted
+    Send ^+{Tab}
+    sleep(200)
+    tab(8)
+    Send {Enter}
+    sleep()
+    Send ^{Backspace}
+    sleep()
+    Send True
+    sleep()
+    tab()
+    Send {Enter}
+    sleep()
+    Send ^{Backspace}
+    sleep()
+    Send True
+    tab(9)
   }
   else
   {
     createInfoodleAccount()
-    ;Not implemented yet. Where it will automatically create account and say so in the workbook.
-    ;~ Sleep 100
-    ;~ Send {Backspace}
-    ;~ Sleep 100
-    ;~ Send ^+{Tab}
-    ;~ Sleep 400
-    ;~ Loop 2
-    ;~ {
-      ;~ Send {Right}
-      ;~ Sleep 100
-    ;~ }
-    ;~ Send {Enter}
-    ;~ Sleep 100
-    ;~ Send ^{Backspace}
-    ;~ Sleep 100
-    ;~ Send False
-    ;~ Sleep 100
-    ;~ Send {Tab}
-    ;~ Sleep 100
-    ;~ Send {Right}
-    ;~ Sleep 100
-    ;~ Send {Enter}
-    ;~ Sleep 100
-    ;~ Send Checked for final call attempt interaction
-    ;~ Sleep 100
-    ;~ Send {Tab}
-    ;~ Loop 7
-    ;~ {
-      ;~ Send {Right}
-      ;~ Sleep 100
-    ;~ }
   }
-
 }
 
 /**
@@ -287,7 +241,6 @@ fillOutNote(note := "", autoFinish := false)
 
   if (autoFinish) 
   {
-    MsgBox, ,, Inside autoFinish
     Send {Tab}
     Sleep 300
     ;Save note
