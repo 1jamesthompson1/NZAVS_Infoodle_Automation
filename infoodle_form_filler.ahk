@@ -11,6 +11,8 @@ loop
   if !FileExist("config.ini")
   { ;----First time setup
     MsgBox, 64, %programName%, Setting up Automation script for first use.
+    InputBox, callerName, %programName%, What was your name?
+    IniWrite %callerName%, config.ini, Settings, callerName
     setupMousePositions()
     changeDefaultNote()
   }
@@ -38,6 +40,7 @@ loop
     IniRead, addButtonX, config.ini, Button Locations, addButtonX
     IniRead, addButtonY, config.ini, Button Locations, addButtonY
     IniRead, noteTemplate, config.ini, Settings, defaultNote
+    IniRead, callerName, config.ini, Settings, callerName
     break
   }
 }
@@ -113,7 +116,7 @@ changeDefaultNote()
   IniWrite %newNote%, config.ini, Settings, defaultNote
 }
 
-checkForAccount()
+checkForAccount(finalAttempt := false)
 {
   global
   Send {Home}
@@ -137,7 +140,12 @@ checkForAccount()
   { ;Go to note fill out most of the interaction
     Click %selectionX% %selectionY%
     MsgBox, 0, %programName%, Has the account loaded yet, 7
-    fillOutNote(noteTemplate)
+    if (finalAttempt) {
+
+    }else {
+      fillOutNote(noteTemplate)
+    }
+    
   }
   else
   { ;Go to add a new person
@@ -171,7 +179,7 @@ finalAttemptInteraction()
   {
     Click %selectionX% %selectionY%
     Sleep 3000
-    tempNote = Telefund - MGC - %date%, No contact on 3rd attempt
+    tempNote = Telefund - MGC - %date%,`n Contact added by %callerName%.`n No contact on 3rd attempt
     fillOutNote(tempNote, false)
     ;Not yet implemented
     ;~ Sleep 2000 ;Waiting for the form to be submitted
