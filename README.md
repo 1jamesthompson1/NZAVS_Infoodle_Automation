@@ -19,6 +19,8 @@ All actions must be started on the workbook.
 
 Some of the actions will require user input. Checking of accounts require you to say yes or no. All of the others simply require you to confirm that things have loaded. For these if you dont do anything for long enough it will carry on anyway. You can press enter on the keyboard instead of pressing with mouse as it will be quicker.
 
+Infoodle must be in the tab to the right of the workbook.
+
 ### RAlt 
 This will search infoodle for the leads account. If found will add template note if not will create new account.  
 The particular row you are using **does not** matter.  
