@@ -1,23 +1,35 @@
 # NZAVS_Infoodle_Automation
 
-This read me is to be completed at a later date simple informaiton is being put in here so you can atleast understand what it does without reading code.
+These instructions are not as exhaustive as previous ones but do still provide enough information to get you up and running.
+Like always if any assistance is required please get in contact with me.
 
-Installation is like the previous ahk scripts i have made.
+Installation is like the previous ahk scripts I have made.
 
-There is no first setup.
+There is a first time setup. It will ask you to click locations on the screen. This is where it will press the buttons that it needs to press to automate the processes. After this it will ask you what your template message will be and this will be added the start of notes execpt when it is the 3rd attempt no contact.
 
-Setup at the start of each shift is a bit more involed. You have to 'train' the script where your button are.
-It will come up with prompts and you follow them. It is going to remember the exact place on your screen so if you move you window around then you 
-will need to redo it.
+Normal usage will invole a simple greeting message confirming that you want to carry on using the same settings as previous times. If you want to change any of these you can press no and follow the prompts as you wish.
 
-Here is a gif of me following the propmpts and setting it up:
-![training button locaiton](instructionMedia/trainingButtonLocations.gif)
+Here is a gif of me following the prompts and setting it up with the correct locations:
+![training button locations](instructionMedia/trainingButtonLocations.gif)
 
-Actions
+## Actions
 
- - **RAlt** This will search infoodle for an account. 
-   - If it does have an account it will add then template of a note.
-   - If there is no account it will start the process of creating an account.
-Here is a demonstration of template note:
-![not template](instructionMedia/noteTemplate.gif)
- - **RAlt** + **L** This will do the process for a third call attempt with either creating an account or leaving a note.
+**General comments**
+All actions must be started on the workbook.
+
+Some of the actions will require user input. Checking of accounts require you to say yes or no. All of the others simply require you to confirm that things have loaded. For these if you dont do anything for long enough it will carry on anyway. You can press enter on the keyboard instead of pressing with mouse as it will be quicker.
+
+### RAlt 
+This will search infoodle for the leads account. If found will add template note if not will create new account.  
+The particular row you are using **does not** matter.  
+Here is a demonstration of using it for a person who has an account:
+![note template](instructionMedia/noteTemplate.gif)
+
+### RAlt + L 
+For use with third calls and no contacts.  
+It will search infoodle for the account. If it exists then it will automatically add note and fill out the workbook accordingly. If the account does not exist then it will create a infoolde account.
+
+You must be on the call date column of final attempt as the particular row you are using **does** matter
+
+Here is a demonstration of it being used with an account:
+![final attempt interaction](instructionMedia/thirdAttemptInteraction.gif)
