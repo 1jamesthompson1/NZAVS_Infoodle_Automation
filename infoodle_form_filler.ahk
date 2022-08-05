@@ -3,7 +3,9 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-programName := "NZAVS Automation Script v0.1.0"
+version := "v0.1.1"
+programName := "NZAVS Automation Script "version
+
 
 ;--------------Setup and train the script---------------------
 loop
@@ -11,11 +13,17 @@ loop
   if !FileExist("config.ini")
   { ;----First time setup
     MsgBox, 64, %programName%, Setting up Automation script for first use.
+    IniWrite, %version%, config.ini, Info, version
     setupMousePositions()
     changeDefaultNote()
   }
   else
   { ;----Normal startup
+    IniRead, versionNumber, config.ini, Info, version
+    if (version != versionNumber) {
+      FileDelete, config.ini
+      continue
+    }
     MsgBox, 35, %programName%, Do you want to keep current settings?
     IfMsgBox, Cancel
       ExitApp
@@ -51,6 +59,7 @@ setupMousePositions()
   CoordMode, Mouse
   ;Search Bar
   MsgBox Setting of infoodle, Please press on Search bar
+  MouseDisabling := !MouseDisabling
   Send {Home}
   sleep(200)
   KeyWait, LButton, D
@@ -58,17 +67,21 @@ setupMousePositions()
   searchBarX := xpos
   searchBarY := ypos
   selectionX := searchBarX
-  selectionY := searchBarY + 40
+  selectionY := searchBarY + 50
 
   ;Note button
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %searchBarX% and %searchBarY%, Please press the  Note now.
+  MouseDisabling := !MouseDisabling
   Send {Home}
   sleep 200
   KeyWait, LButton, D
   MouseGetPos, xpos, ypos
   noteButtonX := xpos
   noteButtonY := ypos
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %noteButtonX% and %noteButtonY%, Please press the colour code now.
+  MouseDisabling := !MouseDisabling
 
   ;Colour Code
   Click, %noteButtonX% %noteButtonY%
@@ -76,16 +89,16 @@ setupMousePositions()
   MouseGetPos, xpos, ypos
   colourCodeX := xpos
   colourCodeY := ypos
-
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %colourCodeX% and %colourCodeY%, please press the add account button
+  MouseDisabling := !MouseDisabling
 
   ;Add people account
-  Send {Home}
-  Sleep 200
   KeyWait, LButton, D
   MouseGetPos, xpos, ypos
   addButtonX := xpos
   addButtonY := ypos
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %addButtonX% and %addButtonY%. All setup and ready to go.
 
   IniWrite, %searchBarX%, config.ini, Button Locations, searchBarX
@@ -268,26 +281,26 @@ createInfoodleAccount()
   tab(2)
   Send ^c
   sleep()
-  firstName := Clipboard
+  firstName := clipboard
   tab()
   Send ^c
   sleep()
-  lastName := Clipboard
+  lastName := clipboard
   tab(3)
   Send ^c
   sleep()
-  phoneNumber := Clipboard
+  phoneNumber := clipboard
 
   ;Go to infoodle and add person
   Send ^{Tab}
   sleep()
   click %addButtonX% %addButtonY%
-  sleep(2000)
+  MsgBox, 0, %programName%, Has the add account form loaded?, 4
   tab()
   Send %firstName%
-  tab()
+  tab(2)
   Send %lastName%
-  tab(3)
+  tab(2)
   Send %email%
   tab(3)
   Send %phoneNumber%
@@ -320,3 +333,12 @@ sleep(sleepTime := 100) {
 
 
 Alt::generalInteraction()
+
+
+;----Disable the mousepress
+
+MouseDisabling := 0
+
+#if  MouseDisabling
+LButton::return
+#if 
