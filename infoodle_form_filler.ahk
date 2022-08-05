@@ -13,7 +13,7 @@ loop
   if !FileExist("config.ini")
   { ;----First time setup
     MsgBox, 64, %programName%, Setting up Automation script for first use.
-    IniWrite, version, config.ini, Info, version
+    IniWrite, %version%, config.ini, Info, version
     setupMousePositions()
     changeDefaultNote()
   }
@@ -59,6 +59,7 @@ setupMousePositions()
   CoordMode, Mouse
   ;Search Bar
   MsgBox Setting of infoodle, Please press on Search bar
+  MouseDisabling := !MouseDisabling
   Send {Home}
   sleep(200)
   KeyWait, LButton, D
@@ -69,14 +70,18 @@ setupMousePositions()
   selectionY := searchBarY + 40
 
   ;Note button
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %searchBarX% and %searchBarY%, Please press the  Note now.
+  MouseDisabling := !MouseDisabling
   Send {Home}
   sleep 200
   KeyWait, LButton, D
   MouseGetPos, xpos, ypos
   noteButtonX := xpos
   noteButtonY := ypos
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %noteButtonX% and %noteButtonY%, Please press the colour code now.
+  MouseDisabling := !MouseDisabling
 
   ;Colour Code
   Click, %noteButtonX% %noteButtonY%
@@ -84,16 +89,16 @@ setupMousePositions()
   MouseGetPos, xpos, ypos
   colourCodeX := xpos
   colourCodeY := ypos
-
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %colourCodeX% and %colourCodeY%, please press the add account button
+  MouseDisabling := !MouseDisabling
 
   ;Add people account
-  Send {Home}
-  Sleep 200
   KeyWait, LButton, D
   MouseGetPos, xpos, ypos
   addButtonX := xpos
   addButtonY := ypos
+  MouseDisabling := !MouseDisabling
   MsgBox Set coordinates to %addButtonX% and %addButtonY%. All setup and ready to go.
 
   IniWrite, %searchBarX%, config.ini, Button Locations, searchBarX
@@ -328,3 +333,12 @@ sleep(sleepTime := 100) {
 
 
 Alt::generalInteraction()
+
+
+;----Disable the mousepress
+
+MouseDisabling := 0
+
+#if  MouseDisabling
+LButton::return
+#if 
