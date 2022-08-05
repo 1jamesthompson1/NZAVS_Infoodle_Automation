@@ -67,7 +67,7 @@ setupMousePositions()
   searchBarX := xpos
   searchBarY := ypos
   selectionX := searchBarX
-  selectionY := searchBarY + 40
+  selectionY := searchBarY + 50
 
   ;Note button
   MouseDisabling := !MouseDisabling
