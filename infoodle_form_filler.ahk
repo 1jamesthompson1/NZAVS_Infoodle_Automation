@@ -282,7 +282,7 @@ createInfoodleAccount()
   Send ^{Tab}
   sleep()
   click %addButtonX% %addButtonY%
-  sleep(2000)
+  MsgBox, 0, %programName%, Has the add account form loaded?, 4
   tab()
   Send %firstName%
   tab(2)
