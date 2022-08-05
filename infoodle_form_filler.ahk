@@ -3,7 +3,9 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-programName := "NZAVS Automation Script v0.1.0"
+version := "v0.1.0"
+programName := "NZAVS Automation Script "version
+
 
 ;--------------Setup and train the script---------------------
 loop
@@ -11,11 +13,17 @@ loop
   if !FileExist("config.ini")
   { ;----First time setup
     MsgBox, 64, %programName%, Setting up Automation script for first use.
+    IniWrite, version, config.ini, Info, version
     setupMousePositions()
     changeDefaultNote()
   }
   else
   { ;----Normal startup
+    IniRead, versionNumber, config.ini, Info, version
+    if (version != versionNumber) {
+      FileDelete, config.ini
+      continue
+    }
     MsgBox, 35, %programName%, Do you want to keep current settings?
     IfMsgBox, Cancel
       ExitApp
