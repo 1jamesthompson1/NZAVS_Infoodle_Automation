@@ -3,7 +3,7 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-version := "v0.1.0"
+version := "v0.1.1"
 programName := "NZAVS Automation Script "version
 
 
