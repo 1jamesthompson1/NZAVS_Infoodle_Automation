@@ -268,15 +268,15 @@ createInfoodleAccount()
   tab(2)
   Send ^c
   sleep()
-  firstName := Clipboard
+  firstName := clipboard
   tab()
   Send ^c
   sleep()
-  lastName := Clipboard
+  lastName := clipboard
   tab(3)
   Send ^c
   sleep()
-  phoneNumber := Clipboard
+  phoneNumber := clipboard
 
   ;Go to infoodle and add person
   Send ^{Tab}
@@ -285,9 +285,9 @@ createInfoodleAccount()
   sleep(2000)
   tab()
   Send %firstName%
-  tab()
+  tab(2)
   Send %lastName%
-  tab(3)
+  tab(2)
   Send %email%
   tab(3)
   Send %phoneNumber%
