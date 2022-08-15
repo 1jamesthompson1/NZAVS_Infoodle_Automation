@@ -331,6 +331,11 @@ sleep(sleepTime := 100) {
 ;--------Hotkeys---------------
 <!L::finalAttemptInteraction()
 
+<!c::
+if (!checkForAccount()) {
+  createInfoodleAccount()
+}
+Return
 
 Alt::generalInteraction()
 
