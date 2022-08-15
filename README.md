@@ -33,5 +33,8 @@ It will search infoodle for the account. If it exists then it will automatically
 
 You must be on the call date column of final attempt as the particular row you are using **does** matter
 
+### RAlt + c
+Use it on any column. It will search for that leads account in infoodle. If it isnt found then it will start the create account process
+
 Here is a demonstration of it being used with an account:
 ![final attempt interaction](instructionMedia/thirdAttemptInteraction.gif)
