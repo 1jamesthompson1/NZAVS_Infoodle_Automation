@@ -21,19 +21,19 @@ Some of the actions will require user input. Checking of accounts require you to
 
 Infoodle must be in the tab to the right of the workbook.
 
-### RAlt 
+### LAlt 
 This will search infoodle for the leads account. If found will add template note if not will create new account.  
 The particular row you are using **does not** matter.  
 Here is a demonstration of using it for a person who has an account:
 ![note template](instructionMedia/noteTemplate.gif)
 
-### RAlt + L 
+### LAlt + L 
 For use with third calls and no contacts.  
 It will search infoodle for the account. If it exists then it will automatically add note and fill out the workbook accordingly. If the account does not exist then it will create a infoolde account.
 
 You must be on the call date column of final attempt as the particular row you are using **does** matter
 
-### RAlt + c
+### LAlt + c
 Use it on any column. It will search for that leads account in infoodle. If it isnt found then it will start the create account process
 
 Here is a demonstration of it being used with an account:
