@@ -3,7 +3,7 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-version := "v0.1.1"
+version := "v0.2.0"
 programName := "NZAVS Automation Script "version
 
 
@@ -331,6 +331,11 @@ sleep(sleepTime := 100) {
 ;--------Hotkeys---------------
 <!L::finalAttemptInteraction()
 
+<!c::
+if (!checkForAccount()) {
+  createInfoodleAccount()
+}
+Return
 
 Alt::generalInteraction()
 
